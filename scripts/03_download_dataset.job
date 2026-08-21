@@ -1,0 +1,36 @@
+#!/bin/bash
+#SBATCH --job-name=download_dataset
+#SBATCH --output=/home/arua/thesis/logs/download_dataset.%j.out
+#SBATCH --error=/home/arua/thesis/logs/download_dataset.%j.err
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=4
+#SBATCH --time=03:00:00
+#SBATCH --partition=scavenge
+
+set -e
+set -x
+
+export TMPDIR=/home/arua/tmp
+
+mkdir -p /home/arua/thesis/data/eiffel_tower/raw
+cd /home/arua/thesis/data/eiffel_tower/raw
+
+# paste the real URL from https://www.seanoe.org/data/00810/92226/ here
+wget --progress=bar:force \
+    -O eiffel_tower_dataset.tar.gz \
+    "REPLACE_WITH_ACTUAL_URL"
+
+sha256sum eiffel_tower_dataset.tar.gz | tee /home/arua/thesis/data/eiffel_tower/download_sha256.txt
+
+tar -xzvf eiffel_tower_dataset.tar.gz
+
+echo "=== top-level structure ==="
+find . -maxdepth 3 -type d | sort
+
+echo "=== COLMAP binary files ==="
+find . -name "cameras.bin" -o -name "images.bin" -o -name "points3D.bin" | sort
+
+echo "=== image count ==="
+find . -name "*.jpg" -o -name "*.png" | wc -l
+
+echo "download done"
