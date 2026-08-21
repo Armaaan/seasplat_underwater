@@ -28,9 +28,9 @@ export CUDA_HOME=/opt/itu/easybuild/software/CUDA/12.1.1
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
-cd /home/arua/thesis/code
+cd /home/arua/thesis/code/seasplat_underwater
 
-git clone --recursive https://github.com/Armaaan/seasplat_underwater.git
+git submodule update --init --recursive
 cd seasplat_underwater
 
 git rev-parse HEAD | tee /home/arua/thesis/code/seasplat_commit.txt
