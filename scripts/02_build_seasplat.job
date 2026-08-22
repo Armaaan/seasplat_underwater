@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=build_seasplat
-#SBATCH --output=/home/arua/thesis/logs/build_seasplat.%j.out
-#SBATCH --error=/home/arua/thesis/logs/build_seasplat.%j.err
+#SBATCH --output=/home/arua/thesis/logs/build_seasplat.out
+#SBATCH --error=/home/arua/thesis/logs/build_seasplat.err
 #SBATCH --nodes=1
 #SBATCH --nodelist=cn4
 #SBATCH --gres=gpu:v100:1

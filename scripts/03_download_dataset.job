@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --job-name=download_dataset
-#SBATCH --output=/home/arua/thesis/logs/download_dataset.%j.out
-#SBATCH --error=/home/arua/thesis/logs/download_dataset.%j.err
+#SBATCH --output=/home/arua/thesis/logs/download_dataset.out
+#SBATCH --error=/home/arua/thesis/logs/download_dataset.err
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=4
 #SBATCH --time=03:00:00
