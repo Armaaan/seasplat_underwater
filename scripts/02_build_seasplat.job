@@ -36,8 +36,8 @@ git submodule update --init --recursive
 git rev-parse HEAD | tee /home/arua/thesis/code/seasplat_commit.txt
 git log --oneline -5
 
-pip install submodules/diff-gaussian-rasterization
-pip install submodules/simple-knn
+pip install --no-build-isolation submodules/diff-gaussian-rasterization
+pip install --no-build-isolation submodules/simple-knn
 
 python3 -c "
 import diff_gaussian_rasterization
