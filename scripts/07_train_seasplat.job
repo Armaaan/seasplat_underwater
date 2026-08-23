@@ -33,7 +33,8 @@ cd /home/arua/thesis/code/seasplat_underwater
 
 python train.py \
     -s $SCENE \
-    -m $OUTPUT \
+    -m /home/arua/thesis/experiments \
+    --exp E1_seasplat_baseline \
     --eval \
     --iterations 30000 \
     --seed 42 \
