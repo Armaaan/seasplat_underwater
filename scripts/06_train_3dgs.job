@@ -25,7 +25,8 @@ export CUDA_HOME=/opt/itu/easybuild/software/CUDA/12.1.1
 export PATH=$CUDA_HOME/bin:$PATH
 export LD_LIBRARY_PATH=$CUDA_HOME/lib64:$LD_LIBRARY_PATH
 
-SCENE=/home/arua/thesis/data/eiffel_tower/processed/scene
+# SCENE=/home/arua/thesis/data/eiffel_tower/processed/scene
+SCENE=/home/arua/thesis/data/eiffel_tower/subset_100
 OUTPUT=/home/arua/thesis/experiments/E0_vanilla_3dgs
 mkdir -p $OUTPUT
 
