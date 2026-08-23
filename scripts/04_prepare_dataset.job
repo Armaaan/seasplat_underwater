@@ -25,12 +25,10 @@ PROCESSED=/home/arua/thesis/data/eiffel_tower/processed
 mkdir -p $PROCESSED/sparse_text/0
 mkdir -p $PROCESSED/sparse_binary/0
 
-# copy the text model into a clean location
 cp $RAW/sfm/cameras.txt  $PROCESSED/sparse_text/0/
 cp $RAW/sfm/images.txt   $PROCESSED/sparse_text/0/
 cp $RAW/sfm/points3D.txt $PROCESSED/sparse_text/0/
 
-# convert text -> binary
 colmap model_converter \
     --input_path  $PROCESSED/sparse_text/0 \
     --output_path $PROCESSED/sparse_binary/0 \
@@ -40,13 +38,17 @@ echo "=== binary model stats ==="
 colmap model_analyzer \
     --path $PROCESSED/sparse_binary/0
 
-# undistort images — this removes RADIAL distortion and outputs the
-# structure SeaSplat expects: images/ and sparse/0/ with binary files
 colmap image_undistorter \
-    --image_path        $RAW/images \
-    --input_path        $PROCESSED/sparse_binary/0 \
-    --output_path       $PROCESSED/scene \
-    --output_type       COLMAP
+    --image_path  $RAW/images \
+    --input_path  $PROCESSED/sparse_binary/0 \
+    --output_path $PROCESSED/scene \
+    --output_type COLMAP
+
+# undistorter writes to sparse/ directly, seasplat expects sparse/0/
+mkdir -p $PROCESSED/scene/sparse/0
+cp $PROCESSED/scene/sparse/cameras.bin  $PROCESSED/scene/sparse/0/
+cp $PROCESSED/scene/sparse/images.bin   $PROCESSED/scene/sparse/0/
+cp $PROCESSED/scene/sparse/points3D.bin $PROCESSED/scene/sparse/0/
 
 echo "=== output structure ==="
 find $PROCESSED/scene -maxdepth 3 -type d | sort
