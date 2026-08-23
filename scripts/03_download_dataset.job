@@ -1,10 +1,11 @@
 #!/bin/bash
 #SBATCH --job-name=download_dataset
-#SBATCH --output=/home/arua/thesis/logs/download_dataset.out
-#SBATCH --error=/home/arua/thesis/logs/download_dataset.err
+#SBATCH --output=/home/arua/thesis/logs/download_dataset.%j.out
+#SBATCH --error=/home/arua/thesis/logs/download_dataset.%j.err
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=4
-#SBATCH --time=03:00:00
+#SBATCH --mem=16G
+#SBATCH --time=02:00:00
 #SBATCH --partition=scavenge
 
 set -e
@@ -15,22 +16,22 @@ export TMPDIR=/home/arua/tmp
 mkdir -p /home/arua/thesis/data/eiffel_tower/raw
 cd /home/arua/thesis/data/eiffel_tower/raw
 
-# paste the real URL from https://www.seanoe.org/data/00810/92226/ here
 wget --progress=bar:force \
-    -O eiffel_tower_dataset.tar.gz \
-    "REPLACE_WITH_ACTUAL_URL"
+    -O eiffel_2020.zip \
+    "https://www.seanoe.org/data/00810/92226/data/98356.zip"
 
-sha256sum eiffel_tower_dataset.tar.gz | tee /home/arua/thesis/data/eiffel_tower/download_sha256.txt
+sha256sum eiffel_2020.zip | tee /home/arua/thesis/data/eiffel_tower/download_sha256.txt
 
-tar -xzvf eiffel_tower_dataset.tar.gz
+unzip eiffel_2020.zip
 
 echo "=== top-level structure ==="
-find . -maxdepth 3 -type d | sort
+find . -maxdepth 4 -type d | sort
 
-echo "=== COLMAP binary files ==="
-find . -name "cameras.bin" -o -name "images.bin" -o -name "points3D.bin" | sort
+echo "=== COLMAP files ==="
+find . -name "cameras.bin" -o -name "images.bin" -o -name "points3D.bin" \
+       -o -name "cameras.txt" -o -name "images.txt" -o -name "points3D.txt" | sort
 
 echo "=== image count ==="
-find . -name "*.jpg" -o -name "*.png" | wc -l
+find . -name "*.jpg" -o -name "*.png" -o -name "*.JPG" -o -name "*.PNG" | wc -l
 
 echo "download done"
