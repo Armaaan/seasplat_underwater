@@ -36,6 +36,9 @@ git submodule update --init --recursive
 git rev-parse HEAD | tee /home/arua/thesis/code/seasplat_commit.txt
 git log --oneline -5
 
+pip install setuptools
+pip install "numpy<2.0"
+
 pip install --no-build-isolation submodules/diff-gaussian-rasterization
 pip install --no-build-isolation submodules/simple-knn
 
