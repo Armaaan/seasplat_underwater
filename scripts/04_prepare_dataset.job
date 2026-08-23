@@ -1,0 +1,61 @@
+#!/bin/bash
+#SBATCH --job-name=prepare_dataset
+#SBATCH --output=/home/arua/thesis/logs/prepare_dataset.%j.out
+#SBATCH --error=/home/arua/thesis/logs/prepare_dataset.%j.err
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=16
+#SBATCH --mem=64G
+#SBATCH --time=04:00:00
+#SBATCH --partition=scavenge
+
+set -e
+set -x
+
+module purge
+module load Anaconda3/2023.07-2
+module load CUDA/12.1.1
+eval "$(conda shell.bash hook)"
+conda activate seasplat
+
+export TMPDIR=/home/arua/tmp
+
+RAW=/home/arua/thesis/data/eiffel_tower/raw/2020
+PROCESSED=/home/arua/thesis/data/eiffel_tower/processed
+
+mkdir -p $PROCESSED/sparse_text/0
+mkdir -p $PROCESSED/sparse_binary/0
+
+# copy the text model into a clean location
+cp $RAW/sfm/cameras.txt  $PROCESSED/sparse_text/0/
+cp $RAW/sfm/images.txt   $PROCESSED/sparse_text/0/
+cp $RAW/sfm/points3D.txt $PROCESSED/sparse_text/0/
+
+# convert text -> binary
+colmap model_converter \
+    --input_path  $PROCESSED/sparse_text/0 \
+    --output_path $PROCESSED/sparse_binary/0 \
+    --output_type BIN
+
+echo "=== binary model stats ==="
+colmap model_analyzer \
+    --path $PROCESSED/sparse_binary/0
+
+# undistort images — this removes RADIAL distortion and outputs the
+# structure SeaSplat expects: images/ and sparse/0/ with binary files
+colmap image_undistorter \
+    --image_path        $RAW/images \
+    --input_path        $PROCESSED/sparse_binary/0 \
+    --output_path       $PROCESSED/scene \
+    --output_type       COLMAP
+
+echo "=== output structure ==="
+find $PROCESSED/scene -maxdepth 3 -type d | sort
+
+echo "=== undistorted model stats ==="
+colmap model_analyzer \
+    --path $PROCESSED/scene/sparse/0
+
+echo "=== image count ==="
+find $PROCESSED/scene/images -name "*.png" -o -name "*.jpg" | wc -l
+
+echo "prepare dataset done"
