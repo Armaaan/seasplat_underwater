@@ -99,7 +99,7 @@ class OptimizationParams(ParamGroup):
         self.densification_interval = 100
         self.opacity_reset_interval = 3000
         self.densify_from_iter = 500
-        self.densify_until_iter = 15_000
+        self.densify_until_iter = 20000
         self.densify_grad_threshold = 0.0002
         self.random_background = False
 
@@ -144,7 +144,7 @@ class OptimizationParams(ParamGroup):
         self.dwr_lambda = 1.0
 
         self.use_dcp_loss = True             # use dark channel prior loss
-        self.dcp_loss_lambda = 1.0             # use dark channel prior loss
+        self.dcp_loss_lambda = 0.5             # use dark channel prior loss
 
         self.use_rgb_sat_loss = True         # use RGB saturation loss
         self.sat_loss_lambda = 2.0         #
@@ -154,7 +154,7 @@ class OptimizationParams(ParamGroup):
         self.gw_reverse_J = False
         self.use_render_for_gw = False
         self.gw_detach_alpha_bg = False
-        self.gw_from_iter = 10_000
+        self.gw_from_iter = 5000
         self.gw_filter_by_alpha = 0.0
 
         self.use_rgb_sv_loss = False          # use RGB spatial variation loss from DeepSeeColor
