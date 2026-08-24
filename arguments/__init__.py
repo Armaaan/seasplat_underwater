@@ -85,6 +85,11 @@ class PipelineParams(ParamGroup):
 
 class OptimizationParams(ParamGroup):
     def __init__(self, parser):
+        # Tried
+        # bg_lambda = 0.05 # controls how strongly the background scatter is regularized
+        # gw_filter_by_alpha = 0.3 # controls how strongly the gray world prior is applied to pixels with low alpha
+        # opacity_reset_interval = 5000 # resets periodically force Gaussians to rebuild their opacity from scratch
+
         self.iterations = 30_000
         self.position_lr_init = 0.00016
         self.position_lr_final = 0.0000016
